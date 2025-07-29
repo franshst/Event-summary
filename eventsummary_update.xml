@@ -1,0 +1,20 @@
+<updates>
+  <update>
+    <name>Event Summary</name>
+    <description>Module to display a summary of event registrations.</description>
+    <element>mod_eventsummary</element>
+    <type>module</type>
+    <version>0.0.1</version>
+    <infourl title="Event Summary releases">https://github.com/franshst/Event-reg-summary/releases</infourl>
+    <downloads>
+      <downloadurl type="full" format="zip">
+                https://github.com/franshst/Event-reg-summary/releases/download/V0.0.1/mod_eventsummary.zip
+            </downloadurl>
+    </downloads>
+    <maintainer>Frans Stuurman</maintainer>
+    <maintainerurl>https://github.com/franshst</maintainerurl>
+    <targetplatform name="joomla" version="4|5" />
+    <client>site</client>
+    <sha256>fcba594eab978eb7ae59897191f8960d422e85bb3a5642058c505040a97fb171</sha256>
+  </update>
+</updates>
