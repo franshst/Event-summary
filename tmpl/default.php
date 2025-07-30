@@ -14,81 +14,55 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 
 ?>
-<style>
-    .eventsummary-filters {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 15px;
-    }
-    .eventsummary-filters .filter-item {
-        display: flex;
-        flex-direction: column;
-    }
-    .eventsummary-table-wrapper {
-        overflow-x: auto;
-    }
-    .eventsummary-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    .eventsummary-table th,
-    .eventsummary-table td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-    .eventsummary-table th {
-        background-color: #f2f2f2;
-    }
-</style>
 
-<form action="" method="post" name="eventsummary-filters-form">
-    <div class="eventsummary-filters">
-        <div class="filter-item">
-            <label for="filter_title"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_TITLE'); ?></label>
-            <input type="text" name="filter_title" id="filter_title" value="<?php echo htmlspecialchars($filters['title'], ENT_COMPAT, 'UTF-8'); ?>">
+<form action="" method="post" name="eventsummary-filters-form" class="mb-4">
+    <div class="row g-3 align-items-center">
+        <div class="col-md">
+            <label for="filter_title" class="form-label"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_TITLE'); ?></label>
+            <input type="text" name="filter_title" id="filter_title" class="form-control" value="<?php echo htmlspecialchars($filters['title'], ENT_COMPAT, 'UTF-8'); ?>">
         </div>
-        <div class="filter-item">
-            <label for="filter_location_id"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_LOCATION'); ?></label>
-            <select name="filter_location_id" id="filter_location_id">
+        <div class="col-md">
+            <label for="filter_location_id" class="form-label"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_LOCATION'); ?></label>
+            <select name="filter_location_id" id="filter_location_id" class="form-select">
                 <option value="0"><?php echo Text::_('MOD_EVENTSUMMARY_ALL'); ?></option>
                 <?php foreach ($locations as $location) : ?>
                     <option value="<?php echo (int)$location->id; ?>" <?php if ($filters['location_id'] == $location->id) echo 'selected'; ?>><?php echo htmlspecialchars($location->name, ENT_COMPAT, 'UTF-8'); ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="filter-item">
-            <label for="filter_category_id"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_CATEGORY'); ?></label>
-            <select name="filter_category_id" id="filter_category_id">
+        <div class="col-md">
+            <label for="filter_category_id" class="form-label"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_CATEGORY'); ?></label>
+            <select name="filter_category_id" id="filter_category_id" class="form-select">
                 <option value="0"><?php echo Text::_('MOD_EVENTSUMMARY_ALL'); ?></option>
                 <?php foreach ($categories as $category) : ?>
                     <option value="<?php echo (int)$category->id; ?>" <?php if ($filters['category_id'] == $category->id) echo 'selected'; ?>><?php echo htmlspecialchars($category->name, ENT_COMPAT, 'UTF-8'); ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="filter-item">
-            <label for="filter_year"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_YEAR'); ?></label>
-            <select name="filter_year" id="filter_year">
+        <div class="col-md">
+            <label for="filter_year" class="form-label"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_YEAR'); ?></label>
+            <select name="filter_year" id="filter_year" class="form-select">
                 <option value="0"><?php echo Text::_('MOD_EVENTSUMMARY_ALL'); ?></option>
                 <?php foreach ($years as $year) : ?>
                     <option value="<?php echo (int)$year; ?>" <?php if ($filters['year'] == $year) echo 'selected'; ?>><?php echo (int)$year; ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="filter-item">
-            <label for="filter_show_empty"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_SHOW_EMPTY'); ?></label>
-            <input type="checkbox" name="filter_show_empty" id="filter_show_empty" value="1" <?php if ($filters['show_empty']) echo 'checked'; ?>>
+        <div class="col-auto d-flex align-items-end">
+            <div class="form-check">
+                <input type="checkbox" name="filter_show_empty" id="filter_show_empty" class="form-check-input" value="1" <?php if ($filters['show_empty']) echo 'checked'; ?>>
+                <label for="filter_show_empty" class="form-check-label"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_SHOW_EMPTY'); ?></label>
+            </div>
         </div>
-        <div class="filter-item">
-            <button type="submit" name="eventsummary_submit"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_BUTTON'); ?></button>
+        <div class="col-auto d-flex align-items-end">
+            <button type="submit" name="eventsummary_submit" class="btn btn-primary"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_BUTTON'); ?></button>
         </div>
     </div>
 </form>
 
-<div class="eventsummary-table-wrapper">
-    <table class="eventsummary-table">
-        <thead>
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-light">
             <tr>
                 <th><?php echo Text::_('MOD_EVENTSUMMARY_TABLE_HEADER_EVENT'); ?></th>
                 <th><?php echo Text::_('MOD_EVENTSUMMARY_TABLE_HEADER_DATE'); ?></th>
@@ -110,7 +84,7 @@ use Joomla\CMS\Language\Text;
                 <?php endforeach; ?>
             <?php else : ?>
                 <tr>
-                    <td colspan="5"><?php echo Text::_('MOD_EVENTSUMMARY_NO_EVENTS_FOUND'); ?></td>
+                    <td colspan="5" class="text-center"><?php echo Text::_('MOD_EVENTSUMMARY_NO_EVENTS_FOUND'); ?></td>
                 </tr>
             <?php endif; ?>
         </tbody>
