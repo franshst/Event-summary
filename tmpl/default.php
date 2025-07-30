@@ -12,12 +12,6 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
-use EventSummaryNamespace\Module\EventSummary\Site\Helper\EventSummaryHelper;
-
-// Fetch data for filters
-$locations = EventSummaryHelper::getLocations();
-$categories = EventSummaryHelper::getCategories();
-$years = EventSummaryHelper::getYears();
 
 ?>
 <style>
