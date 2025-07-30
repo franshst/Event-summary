@@ -27,13 +27,14 @@ $session = Factory::getSession();
 if ($input->get('eventsummary_submit'))
 {
 	// If submitted, get all filter values from the request.
-	// For the checkbox, getInt will correctly return 0 if it's not present (unchecked).
 	$filters = [
 		'title'       => $input->getString('filter_title', ''),
 		'location_id' => $input->getInt('filter_location_id', 0),
 		'category_id' => $input->getInt('filter_category_id', 0),
 		'year'        => $input->getInt('filter_year', 0),
-		'show_empty'  => $input->getInt('filter_show_empty', 0),
+		// Explicitly check for the presence of the checkbox value.
+		// If it exists in the request, it's 1, otherwise it's 0.
+		'show_empty'  => $input->get('filter_show_empty') ? 1 : 0,
 	];
 	// Save the complete, fresh set of filters to the session.
 	$session->set('eventsummary.filters', $filters);
