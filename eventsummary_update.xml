@@ -15,6 +15,6 @@
     <maintainerurl>https://github.com/franshst</maintainerurl>
     <targetplatform name="joomla" version="4|5" />
     <client>site</client>
-    <sha256>53ca2dd25f70aa77704b54fa05d6c2106817be468ed48afce9915d0fe69dbf1d</sha256>
+    <sha256>3b0f0caad4b0db800c6fca00b384aad35bf986d764a506cd66df4a83bdd7496e</sha256>
   </update>
 </updates>

@@ -24,7 +24,7 @@ $input = $app->input;
 $session = Factory::getSession();
 
 // Check if the filter form was submitted by checking for the submit button's name
-if ($input->get('eventsummary_submit'))
+if ($input->exists('eventsummary_submit'))
 {
 	// If submitted, get all filter values from the request.
 	$filters = [
