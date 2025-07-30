@@ -50,8 +50,8 @@ use Joomla\CMS\Language\Text;
         </div>
         <div class="col-auto d-flex align-items-end">
             <div class="form-check">
-                <input type="checkbox" name="filter_show_empty" id="filter_show_empty" class="form-check-input" value="1" <?php if ($filters['show_empty']) echo 'checked'; ?>>
-                <label for="filter_show_empty" class="form-check-label"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_SHOW_EMPTY'); ?></label>
+                <input type="checkbox" name="filter_show_future" id="filter_show_future" class="form-check-input" value="1" <?php if (!empty($filters['show_future'])) echo 'checked'; ?>>
+                <label for="filter_show_future" class="form-check-label"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_SHOW_FUTURE'); ?></label>
             </div>
         </div>
         <div class="col-auto d-flex align-items-end">

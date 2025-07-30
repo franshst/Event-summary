@@ -34,7 +34,7 @@ if ($input->exists('eventsummary_submit'))
 		'year'        => $input->getInt('filter_year', 0),
 		// Explicitly check for the presence of the checkbox value.
 		// If it exists in the request, it's 1, otherwise it's 0.
-		'show_empty'  => $input->get('filter_show_empty') ? 1 : 0,
+		'show_future'  => $input->get('filter_show_future') ? 1 : 0,
 	];
 	// Save the complete, fresh set of filters to the session.
 	$session->set('eventsummary.filters', $filters);
@@ -48,7 +48,7 @@ else
 		'location_id' => 0,
 		'category_id' => 0,
 		'year'        => 0,
-		'show_empty'  => 0,
+		'show_future'  => 0,
 	]);
 }
 

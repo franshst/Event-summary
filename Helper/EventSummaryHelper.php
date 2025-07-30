@@ -50,8 +50,8 @@ class EventSummaryHelper
         if (!empty($filters['year'])) {
             $query->where('YEAR(' . $db->quoteName('e.event_date') . ') = ' . (int)$filters['year']);
         }
-        if (empty($filters['show_empty'])) {
-            $query->having('current_registrations > 0');
+        if (empty($filters['show_future'])) {
+            $query->where('CAST(' . $db->quoteName('e.event_date') . ' AS DATE) <= CURDATE()');
         }
 
         $db->setQuery($query);
