@@ -17,26 +17,8 @@ use Joomla\CMS\Language\Text;
 
 class EventSummaryHelper
 {
-    public static function getEventData()
+    public static function getEventData($filters)
     {
-        $app = Factory::getApplication();
-        $input = $app->input;
-        $session = Factory::getSession();
-
-        // Get filter values from request or session
-        $filters = [
-            'title' => $input->getString('filter_title', $session->get('eventsummary.filter_title', '')),
-            'location_id' => $input->getInt('filter_location_id', $session->get('eventsummary.filter_location_id', 0)),
-            'category_id' => $input->getInt('filter_category_id', $session->get('eventsummary.filter_category_id', 0)),
-            'year' => $input->getInt('filter_year', $session->get('eventsummary.filter_year', 0)),
-            'show_empty' => $input->getInt('filter_show_empty', $session->get('eventsummary.filter_show_empty', 0)),
-        ];
-
-        // Store filters in session
-        foreach ($filters as $key => $value) {
-            $session->set('eventsummary.filter_' . $key, $value);
-        }
-
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
 

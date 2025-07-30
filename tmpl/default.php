@@ -87,7 +87,7 @@ $years = EventSummaryHelper::getYears();
             <input type="checkbox" name="filter_show_empty" id="filter_show_empty" value="1" <?php if ($filters['show_empty']) echo 'checked'; ?>>
         </div>
         <div class="filter-item">
-            <button type="submit"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_BUTTON'); ?></button>
+            <button type="submit" name="eventsummary_submit"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_BUTTON'); ?></button>
         </div>
     </div>
 </form>
