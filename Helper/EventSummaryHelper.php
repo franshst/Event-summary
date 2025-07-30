@@ -19,31 +19,58 @@ class EventSummaryHelper
 {
     public static function getEventData()
     {
+        $app = Factory::getApplication();
+        $input = $app->input;
+        $session = Factory::getSession();
+
+        // Get filter values from request or session
+        $filters = [
+            'title' => $input->getString('filter_title', $session->get('eventsummary.filter_title', '')),
+            'location_id' => $input->getInt('filter_location_id', $session->get('eventsummary.filter_location_id', 0)),
+            'category_id' => $input->getInt('filter_category_id', $session->get('eventsummary.filter_category_id', 0)),
+            'year' => $input->getInt('filter_year', $session->get('eventsummary.filter_year', 0)),
+            'show_empty' => $input->getInt('filter_show_empty', $session->get('eventsummary.filter_show_empty', 0)),
+        ];
+
+        // Store filters in session
+        foreach ($filters as $key => $value) {
+            $session->set('eventsummary.filter_' . $key, $value);
+        }
+
         $db = Factory::getContainer()->get('DatabaseDriver');
-        $query = "
-            SELECT
-                e.id,
-                e.title,
-                e.event_date,
-                SUM(CASE WHEN r.published = 1 THEN r.number_registrants ELSE 0 END) AS current_registrations,
-                SUM(CASE WHEN r.published = 1 AND r.checked_in > 0 THEN r.number_registrants ELSE 0 END) AS checked_in,
-                (
-                    SUM(CASE WHEN r.published = 1 THEN r.number_registrants ELSE 0 END) -
-                    SUM(CASE WHEN r.published = 1 AND r.checked_in > 0 THEN r.number_registrants ELSE 0 END)
-                ) AS not_checked_in
-            FROM
-                `#__eb_events` AS e
-            LEFT JOIN
-                `#__eb_registrants` AS r ON e.id = r.event_id
-            WHERE
-                e.published = 1
-            GROUP BY
-                e.id, e.title, e.event_date
-            HAVING
-                current_registrations > 0
-            ORDER BY
-                e.event_date DESC;
-        ";
+        $query = $db->getQuery(true);
+
+        $query->select([
+            'e.id',
+            'e.title',
+            'e.event_date',
+            'SUM(CASE WHEN r.published = 1 THEN r.number_registrants ELSE 0 END) AS current_registrations',
+            'SUM(CASE WHEN r.published = 1 AND r.checked_in > 0 THEN r.number_registrants ELSE 0 END) AS checked_in',
+            '(SUM(CASE WHEN r.published = 1 THEN r.number_registrants ELSE 0 END) - SUM(CASE WHEN r.published = 1 AND r.checked_in > 0 THEN r.number_registrants ELSE 0 END)) AS not_checked_in'
+        ])
+        ->from($db->quoteName('#__eb_events', 'e'))
+        ->leftJoin($db->quoteName('#__eb_registrants', 'r') . ' ON ' . $db->quoteName('e.id') . ' = ' . $db->quoteName('r.event_id'))
+        ->where($db->quoteName('e.published') . ' = 1')
+        ->group($db->quoteName(['e.id', 'e.title', 'e.event_date']))
+        ->order($db->quoteName('e.event_date') . ' DESC');
+
+        // Apply filters
+        if (!empty($filters['title'])) {
+            $query->where($db->quoteName('e.title') . ' LIKE ' . $db->quote('%' . $filters['title'] . '%'));
+        }
+        if (!empty($filters['location_id'])) {
+            $query->where($db->quoteName('e.location_id') . ' = ' . (int)$filters['location_id']);
+        }
+        if (!empty($filters['category_id'])) {
+            $query->innerJoin($db->quoteName('#__eb_event_categories', 'ec') . ' ON ' . $db->quoteName('e.id') . ' = ' . $db->quoteName('ec.event_id'));
+            $query->where($db->quoteName('ec.category_id') . ' = ' . (int)$filters['category_id']);
+        }
+        if (!empty($filters['year'])) {
+            $query->where('YEAR(' . $db->quoteName('e.event_date') . ') = ' . (int)$filters['year']);
+        }
+        if (empty($filters['show_empty'])) {
+            $query->having('current_registrations > 0');
+        }
 
         $db->setQuery($query);
         return $db->loadObjectList();

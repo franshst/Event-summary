@@ -53,14 +53,14 @@ $years = EventSummaryHelper::getYears();
     <div class="eventsummary-filters">
         <div class="filter-item">
             <label for="filter_title"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_TITLE'); ?></label>
-            <input type="text" name="filter_title" id="filter_title" value="">
+            <input type="text" name="filter_title" id="filter_title" value="<?php echo htmlspecialchars($filters['title'], ENT_COMPAT, 'UTF-8'); ?>">
         </div>
         <div class="filter-item">
             <label for="filter_location_id"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_LOCATION'); ?></label>
             <select name="filter_location_id" id="filter_location_id">
                 <option value="0"><?php echo Text::_('MOD_EVENTSUMMARY_ALL'); ?></option>
                 <?php foreach ($locations as $location) : ?>
-                    <option value="<?php echo (int)$location->id; ?>"><?php echo htmlspecialchars($location->name, ENT_COMPAT, 'UTF-8'); ?></option>
+                    <option value="<?php echo (int)$location->id; ?>" <?php if ($filters['location_id'] == $location->id) echo 'selected'; ?>><?php echo htmlspecialchars($location->name, ENT_COMPAT, 'UTF-8'); ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -69,7 +69,7 @@ $years = EventSummaryHelper::getYears();
             <select name="filter_category_id" id="filter_category_id">
                 <option value="0"><?php echo Text::_('MOD_EVENTSUMMARY_ALL'); ?></option>
                 <?php foreach ($categories as $category) : ?>
-                    <option value="<?php echo (int)$category->id; ?>"><?php echo htmlspecialchars($category->name, ENT_COMPAT, 'UTF-8'); ?></option>
+                    <option value="<?php echo (int)$category->id; ?>" <?php if ($filters['category_id'] == $category->id) echo 'selected'; ?>><?php echo htmlspecialchars($category->name, ENT_COMPAT, 'UTF-8'); ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -78,13 +78,13 @@ $years = EventSummaryHelper::getYears();
             <select name="filter_year" id="filter_year">
                 <option value="0"><?php echo Text::_('MOD_EVENTSUMMARY_ALL'); ?></option>
                 <?php foreach ($years as $year) : ?>
-                    <option value="<?php echo (int)$year; ?>"><?php echo (int)$year; ?></option>
+                    <option value="<?php echo (int)$year; ?>" <?php if ($filters['year'] == $year) echo 'selected'; ?>><?php echo (int)$year; ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
         <div class="filter-item">
             <label for="filter_show_empty"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_SHOW_EMPTY'); ?></label>
-            <input type="checkbox" name="filter_show_empty" id="filter_show_empty" value="1">
+            <input type="checkbox" name="filter_show_empty" id="filter_show_empty" value="1" <?php if ($filters['show_empty']) echo 'checked'; ?>>
         </div>
         <div class="filter-item">
             <button type="submit"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_BUTTON'); ?></button>
