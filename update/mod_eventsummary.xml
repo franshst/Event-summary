@@ -2,9 +2,9 @@
 <extension type="module" client="site" method="upgrade">
     <name>mod_eventsummary</name>
     <author>Frans Stuurman</author>
-    <copyright>(c) Frans Stuurman 2024</copyright>
+    <copyright>(c) Frans Stuurman 2025</copyright>
     <license>MIT</license>
-    <version>0.0.1</version>
+    <version>{VERSION}</version>
     <description>Module to display a summary of event registrations.</description>
     <updateservers>
         <server type="extension" priority="1" name="Eventsummary">https://github.com/franshst/Event-reg-summary/releases/latest/download/eventsummary_update.xml</server>
