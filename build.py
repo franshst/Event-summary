@@ -12,14 +12,14 @@ if not version:
     exit(1)
 
 # Configuration
-zip_name = "mod_eventupdate.zip"
-temp_folder = "mod_eventupdate_temp"
+zip_name = "mod_eventsummary.zip"
+temp_folder = "mod_eventsummary_temp"
 
-source_mod_xml = os.path.join("update", "mod_eventupdate.xml")
-source_update_xml = os.path.join("update", "eventupdate_update.xml")
+source_mod_xml = os.path.join("update", "mod_eventsummary.xml")
+source_update_xml = os.path.join("update", "eventsummary_update.xml")
 
-target_mod_xml = "mod_eventupdate.xml"
-target_update_xml = "eventupdate_update.xml"
+target_mod_xml = "mod_eventsummary.xml"
+target_update_xml = "eventsummary_update.xml"
 
 def minify_js():
     js_path = "js"
@@ -40,7 +40,7 @@ def minify_js():
                 return
 
 def copy_and_update_mod_xml():
-    print("🔧 Updating mod_eventupdate.xml with version...")
+    print("🔧 Updating mod_eventsummary.xml with version...")
     shutil.copy(source_mod_xml, target_mod_xml)
     tree = ET.parse(target_mod_xml)
     root = tree.getroot()
@@ -49,10 +49,10 @@ def copy_and_update_mod_xml():
         version_tag = ET.SubElement(root, "version")
     version_tag.text = version
     tree.write(target_mod_xml)
-    print("✔ Version updated in mod_eventupdate.xml")
+    print("✔ Version updated in mod_eventsummary.xml")
 
 def prepare_update_xml():
-    print("🔧 Preparing eventupdate_update.xml with version...")
+    print("🔧 Preparing eventsummary_update.xml with version...")
     with open(source_update_xml, "r", encoding="utf-8") as f:
         content = f.read()
 
@@ -61,7 +61,7 @@ def prepare_update_xml():
     with open(target_update_xml, "w", encoding="utf-8") as f:
         f.write(content)
 
-    print("✔ eventupdate_update.xml prepared")
+    print("✔ eventsummary_update.xml prepared")
 
 def update_checksum(zip_file):
     print("🔧 Calculating SHA256 for ZIP file...")
@@ -103,7 +103,7 @@ def create_zip():
 
     # Copy files
     shutil.copy("LICENSE", temp_folder)
-    shutil.copy(target_mod_xml, os.path.join(temp_folder, "mod_eventupdate.xml"))
+    shutil.copy(target_mod_xml, os.path.join(temp_folder, "mod_eventsummary.xml"))
     for file in os.listdir("."):
         if file.endswith(".php"):
             shutil.copy(file, temp_folder)
