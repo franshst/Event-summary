@@ -8,7 +8,7 @@
     <infourl title="Event Summary releases">https://github.com/franshst/Event-reg-summary/releases</infourl>
     <downloads>
       <downloadurl type="full" format="zip">
-          https://github.com/franshst/Event-reg-summary/releases/download/v{UPDATE}/mod_eventsummary.zip
+          https://github.com/franshst/Event-reg-summary/releases/download/v{VERSION}/mod_eventsummary.zip
             </downloadurl>
     </downloads>
     <maintainer>Frans Stuurman</maintainer>
