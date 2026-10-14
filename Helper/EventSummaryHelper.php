@@ -14,12 +14,19 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\DatabaseInterface;
 
 class EventSummaryHelper
 {
+    public static function isEventsBookingAvailable()
+    {
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        return in_array($db->getPrefix() . 'eb_events', $db->getTableList(), true);
+    }
+
     public static function getEventData($filters)
     {
-        $db = Factory::getContainer()->get('DatabaseDriver');
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true);
 
         $query->select([
@@ -38,7 +45,7 @@ class EventSummaryHelper
 
         // Apply filters
         if (!empty($filters['title'])) {
-            $query->where($db->quoteName('e.title') . ' LIKE ' . $db->quote('%' . $filters['title'] . '%'));
+            $query->where($db->quoteName('e.title') . ' LIKE ' . $db->quote('%' . $db->escape($filters['title'], true) . '%', false));
         }
         if (!empty($filters['location_id'])) {
             $query->where($db->quoteName('e.location_id') . ' = ' . (int)$filters['location_id']);
@@ -60,7 +67,7 @@ class EventSummaryHelper
 
     public static function getLocations()
     {
-        $db = Factory::getContainer()->get('DatabaseDriver');
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select($db->quoteName(['id', 'name']))
             ->from($db->quoteName('#__eb_locations'))
@@ -72,7 +79,7 @@ class EventSummaryHelper
 
     public static function getCategories()
     {
-        $db = Factory::getContainer()->get('DatabaseDriver');
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select($db->quoteName(['id', 'name']))
             ->from($db->quoteName('#__eb_categories'))
@@ -84,7 +91,7 @@ class EventSummaryHelper
 
     public static function getYears()
     {
-        $db = Factory::getContainer()->get('DatabaseDriver');
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select('DISTINCT YEAR(event_date) AS year')
             ->from($db->quoteName('#__eb_events'))

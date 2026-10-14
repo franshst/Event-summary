@@ -1,6 +1,5 @@
 import os
 import shutil
-import subprocess
 import hashlib
 import xml.etree.ElementTree as ET
 import sys
@@ -20,24 +19,6 @@ source_update_xml = os.path.join("update", "eventsummary_update.xml")
 
 target_mod_xml = "mod_eventsummary.xml"
 target_update_xml = "eventsummary_update.xml"
-
-def minify_js():
-    js_path = "js"
-    print("🔧 Minifying JavaScript files...")
-    for filename in os.listdir(js_path):
-        if filename.endswith(".min.js"):
-            os.remove(os.path.join(js_path, filename))
-
-    for filename in os.listdir(js_path):
-        if filename.endswith(".js") and not filename.endswith(".min.js"):
-            input_file = os.path.join(js_path, filename)
-            output_file = os.path.join(js_path, filename.replace(".js", ".min.js"))
-            try:
-                subprocess.run(["uglifyjs", input_file, "-o", output_file], check=True)
-                print(f"✔ Minified {filename}")
-            except Exception as e:
-                print(f"❌ Error minifying {filename}: {e}")
-                return
 
 def copy_and_update_mod_xml():
     print("🔧 Updating mod_eventsummary.xml with version...")
@@ -98,7 +79,7 @@ def create_zip():
     os.makedirs(temp_folder)
 
     # Copy required folders
-    for folder in ["tmpl", "language", "Helper", "js"]:
+    for folder in ["tmpl", "language", "Helper"]:
         shutil.copytree(folder, os.path.join(temp_folder, folder))
 
     # Copy files
@@ -113,7 +94,6 @@ def create_zip():
     print(f"✅ Created: {zip_name}")
 
 if __name__ == "__main__":
-    minify_js()
     copy_and_update_mod_xml()
     create_zip()
     prepare_update_xml()

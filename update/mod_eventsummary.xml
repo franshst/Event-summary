@@ -15,7 +15,6 @@
         <filename module="mod_eventsummary">mod_eventsummary.php</filename>
         <folder>tmpl</folder>
         <folder>Helper</folder>
-        <folder>js</folder>
         <folder>language</folder>
     </files>
     <config>

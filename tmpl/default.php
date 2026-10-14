@@ -11,22 +11,28 @@
 // No direct access
 defined('_JEXEC') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 ?>
+
+<?php if (!empty($ebMissing)) : ?>
+    <div class="alert alert-warning" role="alert"><?php echo Text::_('MOD_EVENTSUMMARY_EB_MISSING'); ?></div>
+    <?php return; ?>
+<?php endif; ?>
 
 <form action="" method="post" name="eventsummary-filters-form" class="mb-4">
     <div class="row g-3 align-items-center">
         <div class="col-md">
             <label for="filter_title" class="form-label"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_TITLE'); ?></label>
-            <input type="text" name="filter_title" id="filter_title" class="form-control" value="<?php echo htmlspecialchars($filters['title'], ENT_COMPAT, 'UTF-8'); ?>">
+            <input type="text" name="filter_title" id="filter_title" class="form-control" value="<?php echo htmlspecialchars($filters['title'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
         </div>
         <div class="col-md">
             <label for="filter_location_id" class="form-label"><?php echo Text::_('MOD_EVENTSUMMARY_FILTER_LOCATION'); ?></label>
             <select name="filter_location_id" id="filter_location_id" class="form-select">
                 <option value="0"><?php echo Text::_('MOD_EVENTSUMMARY_ALL'); ?></option>
                 <?php foreach ($locations as $location) : ?>
-                    <option value="<?php echo (int)$location->id; ?>" <?php if ($filters['location_id'] == $location->id) echo 'selected'; ?>><?php echo htmlspecialchars($location->name, ENT_COMPAT, 'UTF-8'); ?></option>
+                    <option value="<?php echo (int)$location->id; ?>" <?php if ($filters['location_id'] == $location->id) echo 'selected'; ?>><?php echo htmlspecialchars($location->name, ENT_QUOTES, 'UTF-8'); ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -35,7 +41,7 @@ use Joomla\CMS\Language\Text;
             <select name="filter_category_id" id="filter_category_id" class="form-select">
                 <option value="0"><?php echo Text::_('MOD_EVENTSUMMARY_ALL'); ?></option>
                 <?php foreach ($categories as $category) : ?>
-                    <option value="<?php echo (int)$category->id; ?>" <?php if ($filters['category_id'] == $category->id) echo 'selected'; ?>><?php echo htmlspecialchars($category->name, ENT_COMPAT, 'UTF-8'); ?></option>
+                    <option value="<?php echo (int)$category->id; ?>" <?php if ($filters['category_id'] == $category->id) echo 'selected'; ?>><?php echo htmlspecialchars($category->name, ENT_QUOTES, 'UTF-8'); ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -75,8 +81,8 @@ use Joomla\CMS\Language\Text;
             <?php if (!empty($eventData)) : ?>
                 <?php foreach ($eventData as $event) : ?>
                     <tr>
-                        <td data-label="<?php echo Text::_('MOD_EVENTSUMMARY_TABLE_HEADER_EVENT'); ?>"><?php echo htmlspecialchars($event->title, ENT_COMPAT, 'UTF-8'); ?></td>
-                        <td data-label="<?php echo Text::_('MOD_EVENTSUMMARY_TABLE_HEADER_DATE'); ?>"><?php echo JHtml::_('date', $event->event_date, 'd-m-Y'); ?></td>
+                        <td data-label="<?php echo Text::_('MOD_EVENTSUMMARY_TABLE_HEADER_EVENT'); ?>"><?php echo htmlspecialchars($event->title, ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td data-label="<?php echo Text::_('MOD_EVENTSUMMARY_TABLE_HEADER_DATE'); ?>"><?php echo HTMLHelper::_('date', $event->event_date, 'd-m-Y'); ?></td>
                         <td data-label="<?php echo Text::_('MOD_EVENTSUMMARY_TABLE_HEADER_REGISTRATIONS'); ?>"><?php echo (int)$event->current_registrations; ?></td>
                         <td data-label="<?php echo Text::_('MOD_EVENTSUMMARY_TABLE_HEADER_CHECKED_IN'); ?>"><?php echo (int)$event->checked_in; ?></td>
                         <td data-label="<?php echo Text::_('MOD_EVENTSUMMARY_TABLE_HEADER_NOT_CHECKED_IN'); ?>"><?php echo (int)$event->not_checked_in; ?></td>
