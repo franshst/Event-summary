@@ -1,10 +1,12 @@
 name: Joomla Extension Release
 
 on:
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       version:
-        description: "Release version (e.g. 1.2.3)"
+        description: "Release version without leading v (e.g. 1.2.3)"
         required: true
 
 permissions:
@@ -22,17 +24,28 @@ jobs:
       with:
         python-version: '3.x'
 
+    - name: Determine version
+      run: |
+        if [ "${{ github.event_name }}" = "release" ]; then
+          VERSION="${{ github.event.release.tag_name }}"
+        else
+          VERSION="v${{ github.event.inputs.version }}"
+        fi
+        VERSION="${VERSION#v}"
+        if [ -z "$VERSION" ]; then echo "Empty version, aborting"; exit 1; fi
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+
     - name: Build and Package
       run: |
-        python build.py ${{ github.event.inputs.version }}
+        python build.py ${{ env.VERSION }}
         echo "ZIP_NAME=mod_eventsummary.zip" >> $GITHUB_ENV
 
-    - name: Create GitHub Pre-Release
+    - name: Attach assets to Release
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: v${{ github.event.inputs.version }}
-        name: v${{ github.event.inputs.version }}
-        prerelease: true   # ✅ Mark release as a pre-release
+        tag_name: ${{ github.event_name == 'release' && github.event.release.tag_name || format('v{0}', env.VERSION) }}
+        name: ${{ github.event_name == 'release' && github.event.release.tag_name || format('v{0}', env.VERSION) }}
+        prerelease: ${{ github.event_name != 'release' }}
         generate_release_notes: true  # ✅ Auto-fill release notes (you can edit them)
         files: |
           ${{ env.ZIP_NAME }}
